@@ -1,0 +1,46 @@
+node {
+    // demo
+    stage('SCM Checkout') {
+        git 'https://github.com/borseatul007/my-app'
+    }
+    
+    stage('Install Dependencies') {
+        // Install Node.js and npm (if not already installed)
+        // You can use the Node.js plugin or set up Node.js on your Jenkins agent manually
+        
+        // Run npm install to install dependencies
+        sh 'npm install'
+    }
+    
+    stage('Build') {
+        sh 'npm run build'
+    }
+    
+    stage('SonarQube Analysis') {
+        withSonarQubeEnv('sonar-qube') {
+            // Run the SonarScanner for JavaScript
+            sh 'sonar-scanner'
+        }
+    }
+    
+    stage('Email Notification') {
+        mail bcc: '',
+            body: '''Hi Welcome to Jenkins email alerts
+                    Thanks
+                    Hari''',
+            cc: '',
+            from: '',
+            replyTo: '',
+            subject: 'Jenkins Job',
+            to: 'borseatul007@gmail.com'
+    }
+    
+    stage('Slack Notification') {
+        slackSend baseUrl: 'https://hooks.slack.com/services/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',
+            channel: '#jenkins-pipeline-demo',
+            color: 'good',
+            message: 'Welcome to Jenkins, Slack!',
+            teamDomain: 'javahomecloud',
+            tokenCredentialId: 'slack-demo'
+    }
+}
