@@ -4,13 +4,6 @@ node {
         git 'https://github.com/borseatul007/my-app'
     }
     
-    stage('Install Dependencies') {
-        // Install Node.js and npm (if not already installed)
-        // You can use the Node.js plugin or set up Node.js on your Jenkins agent manually
-        
-        // Run npm install to install dependencies
-        sh 'npm install'
-    }
     
     stage('Build') {
         sh 'npm run build'
