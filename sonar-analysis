@@ -3,8 +3,9 @@ node {
     stage('SCM Checkout') {
         git 'https://github.com/borseatul007/my-app'
     }
-    
-    
+    stage('init') {
+        sh 'npm init'
+    }
     stage('Build') {
         sh 'npm run build'
     }
