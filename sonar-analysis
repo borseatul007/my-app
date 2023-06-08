@@ -4,6 +4,26 @@ node {
         git 'https://github.com/borseatul007/my-app'
     }
     
+    stage('Install Node.js') {
+        // Install nvm
+        sh 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash'
+        
+        // Activate nvm
+        sh 'export NVM_DIR="$HOME/.nvm"'
+        sh '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
+        sh '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"'
+        
+        // Install Node.js
+        sh 'nvm install --lts'
+        
+        // Set the installed Node.js version as the default
+        sh 'nvm alias default lts/*'
+        
+        // Verify Node.js installation
+        sh 'node --version'
+        sh 'npm --version'
+    }
+    
     stage('Build') {
         sh 'npm run build'
     }
