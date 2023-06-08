@@ -28,12 +28,22 @@ node {
       //  sh 'npm run build'
     //}
     
-   stage('SonarQube analysis') {
-    def scannerHome = tool 'SonarQube Scanner 4.8.0.2856';
-    withSonarQubeEnv('sonar-jenkins') { // If you have configured more than one global server connection, you can specify its name
-      sh "${scannerHome}/bin/sonar-scanner"
-    }
-  }
+  stage('SonarQube Analysis') {
+    def scannerHome = tool 'SonarQube'
+      withSonarQubeEnv('SonarQube') {
+      sh """/var/lib/jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarQube/bin/sonar-scanner \
+     -D sonar.projectVersion=1.0-SNAPSHOT \
+       -D sonar.login=admin \
+      -D sonar.password=Atul@2022 \
+      -D sonar.projectBaseDir=/var/lib/jenkins/workspace/jenkins-sonar/ \
+        -D sonar.projectKey=my-app1 \
+        -D sonar.sourceEncoding=UTF-8 \
+        -D sonar.language=java \
+        -D sonar.sources=my-app/src/main \
+        -D sonar.tests=my-app/src/test \
+        -D sonar.host.url=http://172.232.71.221:8085/"""
+        }
+}
     
     stage('Email Notification') {
         mail bcc: '',
